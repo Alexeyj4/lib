@@ -1,10 +1,11 @@
 #pragma once
+#include <Arduino.h>
 #include <driver/gpio.h>
 #include <driver/pcnt.h>
 #define MAX_ESP32_ENCODERS PCNT_UNIT_MAX
 #define 	_INT16_MAX 32766
 #define  	_INT16_MIN -32766
-#define ISR_CORE_USE_DEFAULT (0xffffffff)
+
 
 enum encType {
 	single,
@@ -41,9 +42,8 @@ public:
 	int64_t clearCount();
 	int64_t pauseCount();
 	int64_t resumeCount();
-	void detach();
-	[[deprecated("Replaced by detach")]] void detatch();
-	bool isAttached(){return attached;}
+	void detatch();
+	boolean isAttached(){return attached;}
 	void setCount(int64_t value);
 	void setFilter(uint16_t value);
 	static ESP32Encoder *encoders[MAX_ESP32_ENCODERS];
@@ -51,15 +51,16 @@ public:
 	gpio_num_t aPinNumber;
 	gpio_num_t bPinNumber;
 	pcnt_unit_t unit;
+	bool fullQuad=false;
 	int countsMode = 2;
 	volatile int64_t count=0;
 	pcnt_config_t r_enc_config;
 	static enum puType useInternalWeakPullResistors;
-	static uint32_t isrServiceCpuCore;
 	enc_isr_cb_t _enc_isr_cb;
 	void* _enc_isr_cb_data;
 
 private:
+	static  pcnt_isr_handle_t user_isr_handle;
 	static bool attachedInterrupt;
 	void attach(int aPintNumber, int bPinNumber, enum encType et);
 	int64_t getCountRaw();
@@ -70,3 +71,4 @@ private:
 
 //Added by Sloeber
 #pragma once
+

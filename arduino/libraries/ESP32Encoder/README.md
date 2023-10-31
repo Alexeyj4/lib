@@ -11,34 +11,14 @@ There is only one interrupt for the peripheral, and that is managed by the libra
 
 This hardware peripheral supports only 8 encoders. 
 
-# Support
-
-ESP32 and ESP32c2 are supported. 
-
-ESP32c3 does not have pulse counter hardware. 
-
 # Documentation by Doxygen
 
 [ESP32Encoder Doxygen](https://madhephaestus.github.io/ESP32Encoder/classESP32Encoder.html)
-
-# Quadrature Explanation
-
-For information on the type of encoder this library is for, see: https://en.wikipedia.org/wiki/Incremental_encoder
-
-The modes of reading encoders in this library are full and half quadrature, and single edge count mode. 
-
-![Image](https://upload.wikimedia.org/wikipedia/commons/1/1e/Incremental_directional_encoder.gif)
-
-Full performs a count increment on all 4 edges, half on the rising and falling of a single channel, and single counts just the rising edge of the A channel. 
-
 
 
 ## Pull Downs/Ups
 
 To specify the weak pull resistor set the value [useInternalWeakPullResistors](https://madhephaestus.github.io/ESP32Encoder/classESP32Encoder.html#a53dc40c9de240e90a55b427b32da451f) with the enum types [UP, DOWN, or NONE](https://madhephaestus.github.io/ESP32Encoder/ESP32Encoder_8h.html#adca399663765c125d26e6f2896b5b349)
-
-## ISR service CPU core
-To specify the CPU core for the PCNT ISR service set the value [isrServiceCpuCore](https://madhephaestus.github.io/ESP32Encoder/classESP32Encoder.html#a445e515b31ade19658075aa7417086bb) to the desired core number. This can be usefull to prevent concurrency problems where the total count might not be updated correctly yet while it is read.
 
 # A note on KY-040 and similar
 
