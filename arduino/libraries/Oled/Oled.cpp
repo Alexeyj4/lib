@@ -3,8 +3,7 @@
 Oled::Oled(){
   screen_width=128;
   screen_height=64;            
-  oled_string_pos[0]=12; oled_string_pos[1]=28; oled_string_pos[2]=44; oled_string_pos[3]=62;
-  display=Adafruit_SSD1306(screen_width, screen_height, &Wire, -1); // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)  
+  oled_string_pos[0]=12; oled_string_pos[1]=28; oled_string_pos[2]=44; oled_string_pos[3]=62;  
   oled_text[0]=""; oled_text[1]=""; oled_text[2]=""; oled_text[3]=""; 
   oled_str_changed[0]=0; oled_str_changed[1]=0; oled_str_changed[2]=0; oled_str_changed[3]=0; 
   oled_need_update=0;
