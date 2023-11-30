@@ -5,8 +5,40 @@
 
 Ble::Ble(){
 	BLECharacteristic *pCharacteristic;
+	deviceConnected = false;
 }   
-  
+ 
+// функции обратного вызова, которые будут запускаться
+// при подключении и отключении BLE-клиента от BLE-сервера:
+class MyServerCallbacks: public BLEServerCallbacks {
+  void onConnect(BLEServer* pServer) {
+    deviceConnected = true;
+  };
+  void onDisconnect(BLEServer* pServer) {
+    deviceConnected = false;
+
+    // Начинаем рассылку оповещений:
+    pServer->getAdvertising()->start();
+    //  "Ждем подключения..."
+  }
+};
+
+ //функция обратного вызова, которая будет запускаться
+ //при получении нового значения от Android-приложения:
+class MyCallbacks: public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    std::string rxValue = pCharacteristic->getValue();
+    String s;
+    if(rxValue.length() > 0) {      
+      for(int i = 0; i < rxValue.length(); i++) {
+        s=s+rxValue[i];
+      }
+    }
+   
+   
+  }
+};
+ 
 void Ble::begin(){ 
 	deviceConnected = false;
 
@@ -41,41 +73,14 @@ void Ble::begin(){
 	delay(500);       
 }
 
-// функции обратного вызова, которые будут запускаться
-// при подключении и отключении BLE-клиента от BLE-сервера:
-class MyServerCallbacks: public BLEServerCallbacks {
-  void onConnect(BLEServer* pServer) {
-    deviceConnected = true;
-  };
-  void onDisconnect(BLEServer* pServer) {
-    deviceConnected = false;
-
-    // Начинаем рассылку оповещений:
-    pServer->getAdvertising()->start();
-    //  "Ждем подключения..."
-  }
-};
-
- //функция обратного вызова, которая будет запускаться
- //при получении нового значения от Android-приложения:
-class MyCallbacks: public BLECharacteristicCallbacks {
-  void onWrite(BLECharacteristic *pCharacteristic) {
-    std::string rxValue = pCharacteristic->getValue();
-    String s;
-    if(rxValue.length() > 0) {      
-      for(int i = 0; i < rxValue.length(); i++) {
-        s=s+rxValue[i];
-      }
-    }
-   
-   
-  }
-};
 
 
-void Ble::send(String s){
+
+
+
+bool Ble::send(String s){
 	  // Если устройство подключено... 
-  if(deviceConnected) {
+  if(Ble::deviceConnected) {
     pCharacteristic->setValue(s.c_str());
     // отправляем значение Android-приложению:
     pCharacteristic->notify();     

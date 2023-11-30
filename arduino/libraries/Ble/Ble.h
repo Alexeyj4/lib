@@ -12,7 +12,7 @@ class Ble{
 	void begin();
 	bool send(String s);//1-ok //0-not ok
 	String recv();//""-not to received	
-	bool deviceConnected;
+	static bool deviceConnected;
 	BLECharacteristic *pCharacteristic;
 	
 };
