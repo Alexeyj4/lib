@@ -10,9 +10,10 @@ class Ble{
     Ble();
 	String s;
 	void begin();
+	bool connected();
 	bool send(String s);//1-ok //0-not ok
 	String recv();//""-not to received	
-	//static bool deviceConnected;
+	bool deviceConnected;
 	BLECharacteristic *pCharacteristic;
 	
 };

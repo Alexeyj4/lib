@@ -5,7 +5,7 @@
 
 Ble::Ble(){
 	BLECharacteristic *pCharacteristic;
-	//deviceConnected = false;
+	deviceConnected = false;
 }   
  
 // функции обратного вызова, которые будут запускаться
@@ -40,7 +40,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 };
  
 void Ble::begin(){ 
-	//deviceConnected = false;
+	deviceConnected = false;
 
 	// создаем BLE-устройство:
 	BLEDevice::init("ESP32_Board");
@@ -73,19 +73,20 @@ void Ble::begin(){
 	delay(500);       
 }
 
+bool Ble::connected(){
 
-
-
+} 
 
 
 bool Ble::send(String s){
 	  // Если устройство подключено... 
-	//if(deviceConnected) {
-	if(true) {
-    pCharacteristic->setValue(s.c_str());
-    // отправляем значение Android-приложению:
-    pCharacteristic->notify();     
+	if(deviceConnected) {	
+		pCharacteristic->setValue(s.c_str());
+		// отправляем значение Android-приложению:
+		pCharacteristic->notify();     
     }  
 } 	
 
+String Ble::recv(){
 
+} 	
