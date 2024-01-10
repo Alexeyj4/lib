@@ -40,6 +40,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 };
  
 void Ble::begin(){ 
+
+	Serial.println("begin"); //debug
 	deviceConnected = false;
 
 	// создаем BLE-устройство:
