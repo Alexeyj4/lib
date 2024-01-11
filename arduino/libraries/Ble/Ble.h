@@ -11,7 +11,7 @@ class Ble{
 	String s;
 	void begin();
 	bool connected();
-	bool send(String s);//1-ok //0-not ok
+	bool send(String& s);//1-ok //0-not ok
 	String recv();//""-not to received	
 	bool deviceConnected;
 	BLECharacteristic *pCharacteristic;

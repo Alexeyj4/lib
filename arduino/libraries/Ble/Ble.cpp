@@ -41,7 +41,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
  
 void Ble::begin(){ 
 
-	Serial.println("begin"); //debug
+	Serial.println("Ble::begin"); //debug
 	deviceConnected = false;
 
 	// создаем BLE-устройство:
@@ -80,13 +80,13 @@ bool Ble::connected(){
 } 
 
 
-bool Ble::send(String s){
+bool Ble::send(const String &s){
 	  // Если устройство подключено... 
-	if(deviceConnected) {	
+/* 	if(deviceConnected) {	
 		pCharacteristic->setValue(s.c_str());
 		// отправляем значение Android-приложению:
 		pCharacteristic->notify();     
-    }  
+    }  */ 
 } 	
 
 String Ble::recv(){
