@@ -5,7 +5,7 @@
 #include <BLE2902.h>
 #include <arduino.h>
 
-bool deviceConnected;
+//bool deviceConnected;
 
 class Ble{
   public:	 
