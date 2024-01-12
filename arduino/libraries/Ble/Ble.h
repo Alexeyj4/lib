@@ -5,15 +5,17 @@
 #include <BLE2902.h>
 #include <arduino.h>
 
+bool deviceConnected;
+
 class Ble{
   public:	 
     Ble();
 	String s;
 	void begin();
 	bool connected();
-	bool send(String& s);//1-ok //0-not ok
+	bool send(String s);//return 1-ok //0-not ok
 	String recv();//""-not to received	
-	bool deviceConnected;
+	//bool deviceConnected;
 	BLECharacteristic *pCharacteristic;
 	
 };

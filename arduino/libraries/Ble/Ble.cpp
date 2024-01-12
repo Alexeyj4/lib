@@ -3,6 +3,8 @@
 #define CHARACTERISTIC_UUID_RX  "B88E098B-E464-4B54-B827-79EB2B150A9F"
 #define CHARACTERISTIC_UUID_TX  "D769FACF-A4DA-47BA-9253-65359EE480FB"
 
+bool deviceConnected;
+
 Ble::Ble(){
 	BLECharacteristic *pCharacteristic;
 	deviceConnected = false;
@@ -12,7 +14,7 @@ Ble::Ble(){
 // при подключении и отключении BLE-клиента от BLE-сервера:
 class MyServerCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {    
-	//deviceConnected = true;
+	deviceConnected = true;
   };
   void onDisconnect(BLEServer* pServer) {    
 	//deviceConnected = false;
@@ -41,7 +43,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
  
 void Ble::begin(){ 
 
-	Serial.println("Ble::begin"); //debug
+	Serial.println("Ble::begin()"); //debug
 	deviceConnected = false;
 
 	// создаем BLE-устройство:
@@ -80,13 +82,17 @@ bool Ble::connected(){
 } 
 
 
-bool Ble::send(const String &s){
+bool Ble::send(String s){
+	Serial.println("Ble::send()");//debug
+	Serial.println(s);//debug
 	  // Если устройство подключено... 
-/* 	if(deviceConnected) {	
+	if(deviceConnected) {
+		Serial.println("Device connected; send value");
 		pCharacteristic->setValue(s.c_str());
 		// отправляем значение Android-приложению:
 		pCharacteristic->notify();     
-    }  */ 
+    }  
+	return 1;
 } 	
 
 String Ble::recv(){
