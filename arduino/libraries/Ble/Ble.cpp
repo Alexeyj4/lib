@@ -3,21 +3,22 @@
 #define CHARACTERISTIC_UUID_RX  "B88E098B-E464-4B54-B827-79EB2B150A9F"
 #define CHARACTERISTIC_UUID_TX  "D769FACF-A4DA-47BA-9253-65359EE480FB"
 
-bool deviceConnected;
+bool BleDeviceConnected_;
+String BleReceivedString_;
 
 Ble::Ble(){
 	BLECharacteristic *pCharacteristic;
-	deviceConnected = false;
+	BleDeviceConnected_ = false;
 }   
  
 // функции обратного вызова, которые будут запускаться
 // при подключении и отключении BLE-клиента от BLE-сервера:
 class MyServerCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {    
-	deviceConnected = true;
+	BleDeviceConnected_ = true;
   };
   void onDisconnect(BLEServer* pServer) {    
-	//deviceConnected = false;
+	BleDeviceConnected_ = false;
 
     // Начинаем рассылку оповещений:
     pServer->getAdvertising()->start();
@@ -30,10 +31,10 @@ class MyServerCallbacks: public BLEServerCallbacks {
 class MyCallbacks: public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
     std::string rxValue = pCharacteristic->getValue();
-    String s;
+    BleReceivedString_="";
     if(rxValue.length() > 0) {      
       for(int i = 0; i < rxValue.length(); i++) {
-        s=s+rxValue[i];
+        BleReceivedString_=BleReceivedString_+rxValue[i];
       }
     }
    
@@ -44,7 +45,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 void Ble::begin(){ 
 
 	Serial.println("Ble::begin()"); //debug
-	deviceConnected = false;
+	BleDeviceConnected_ = false;
 
 	// создаем BLE-устройство:
 	BLEDevice::init("ESP32_Board");
@@ -86,7 +87,7 @@ bool Ble::send(String s){
 	Serial.println("Ble::send()");//debug
 	Serial.println(s);//debug
 	  // Если устройство подключено... 
-	if(deviceConnected) {
+	if(BleDeviceConnected_) {
 		Serial.println("Device connected; send value");
 		pCharacteristic->setValue(s.c_str());
 		// отправляем значение Android-приложению:
@@ -95,6 +96,10 @@ bool Ble::send(String s){
 	return 1;
 } 	
 
-String Ble::recv(){
-
+String Ble::recvd(){	
+	return BleReceivedString_;
 } 	
+
+void Ble::clr(){
+	BleReceivedString_="";	
+}
