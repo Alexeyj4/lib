@@ -79,7 +79,7 @@ void Ble::begin(){
 }
 
 bool Ble::connected(){
-
+	return BleDeviceConnected_;
 } 
 
 

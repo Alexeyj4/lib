@@ -1,6 +1,7 @@
 #pragma once
+#pragma once
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SH1106.h>
 #include <CourierCyr8.h>
 
 class Oled{
@@ -15,5 +16,5 @@ class Oled{
     String oled_text[4];//text on OLED
     bool oled_str_changed[4];//OLED strings needs to update
     bool oled_need_update;//OLED need update flag
-    Adafruit_SSD1306 display;
+    Adafruit_SH1106 display;
 };
