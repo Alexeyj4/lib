@@ -1,5 +1,7 @@
 Oled	KEYWORD1
 begin	KEYWORD2
 update	KEYWORD2
+print	KEYWORD2
+prints	KEYWORD2
 screen_width	LITERAL1
 screen_height	LITERAL1

@@ -1,13 +1,13 @@
 #pragma once
 #if not defined(OLED_DISPLAY_TYPE)
-#pragma message "please define in config.h: OLED_DISPLAY_TYPE. Example: #define OLED_DISPLAY_TYPE 96"
+#pragma message "please define: OLED_DISPLAY_TYPE. Example: #define OLED_DISPLAY_TYPE [QUOTE]SSD1306[QUOTE]"
 #endif		
 
 #include <Adafruit_GFX.h>
 #include <CourierCyr8.h>
-#if (OLED_DISPLAY_TYPE==96)//OLED 0.96" SSD1306
+#if (OLED_DISPLAY_TYPE==SSD1306)//OLED 0.96" SSD1306
 #include <Adafruit_SSD1306.h>
-#elif (OLED_DISPLAY_TYPE==130)//OLED 1.3" SH1106
+#elif (OLED_DISPLAY_TYPE==SH1106)//OLED 1.3" SH1106
 #include <Adafruit_SH1106.h>
 #endif
 
@@ -24,10 +24,10 @@ class Oled{
     String oled_text[4];//text on OLED
     bool oled_str_changed[4];//OLED strings needs to update
     bool oled_need_update;//OLED need update flag	
-	#if (OLED_DISPLAY_TYPE==96)	
+	#if (OLED_DISPLAY_TYPE==SSD1306)	
 	//#pragma message "OLED type is SSD1306 0.96"
 	Adafruit_SSD1306 display;
-	#elif (OLED_DISPLAY_TYPE==130)
+	#elif (OLED_DISPLAY_TYPE==SH1106)
 	//#pragma message "OLED type is SH1106 1.3"
 	Adafruit_SH1106 display;		
 	#endif    
@@ -40,10 +40,10 @@ Oled::Oled(){
 	oled_text[0]=""; oled_text[1]=""; oled_text[2]=""; oled_text[3]=""; 
 	oled_str_changed[0]=0; oled_str_changed[1]=0; oled_str_changed[2]=0; oled_str_changed[3]=0; 
 	oled_need_update=0;
-	#if(OLED_DISPLAY_TYPE==96)
+	#if(OLED_DISPLAY_TYPE==SSD1306)
 	//#pragma message "OLED type SSD1306 0.96 assign"
 	display=Adafruit_SSD1306(screen_width, screen_height, &Wire, -1); // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins) 
-	#elif(OLED_DISPLAY_TYPE==130)
+	#elif(OLED_DISPLAY_TYPE==SH1106)
 	//#pragma message "OLED type SH1306 1.3 assign"
 	display=Adafruit_SH1106(21,22); // Declaration for an display connected to I2C (SDA, SCL pins) 
 	#endif
@@ -51,9 +51,9 @@ Oled::Oled(){
 }   
   
 void Oled::begin(){ 
-	#if(OLED_DISPLAY_TYPE==96)
+	#if(OLED_DISPLAY_TYPE==SSD1306)
 	display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-	#elif(OLED_DISPLAY_TYPE==130)
+	#elif(OLED_DISPLAY_TYPE==SH1106)
 	display.begin(SH1106_SWITCHCAPVCC, 0x3C);
 	#endif
   
@@ -89,6 +89,7 @@ void Oled::print(int row, String s){
 }
 
 void Oled::prints(String s){
+  s.remove(12);
   oled_text[3]=oled_text[2];
   oled_text[2]=oled_text[1];
   oled_text[1]=oled_text[0];
