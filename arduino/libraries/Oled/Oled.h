@@ -5,9 +5,9 @@
 
 #include <Adafruit_GFX.h>
 #include <CourierCyr8.h>
-#if (OLED_DISPLAY_TYPE==96)
+#if (OLED_DISPLAY_TYPE==96)//OLED 0.96" SSD1306
 #include <Adafruit_SSD1306.h>
-#elif (OLED_DISPLAY_TYPE==130)
+#elif (OLED_DISPLAY_TYPE==130)//OLED 1.3" SH1106
 #include <Adafruit_SH1106.h>
 #endif
 
@@ -15,8 +15,9 @@ class Oled{
   public:
     Oled();
     void begin();
-    void update();
+    void update();//screen rendering
     void print(int row, String s);        
+	void prints(String s);//print in 1-st string and scroll down the screen// Not need update()
     int screen_width; // OLED display width, in pixels
     int screen_height; // OLED display height, in pixels    
     int oled_string_pos[4];//positon for each string on oled
@@ -24,10 +25,10 @@ class Oled{
     bool oled_str_changed[4];//OLED strings needs to update
     bool oled_need_update;//OLED need update flag	
 	#if (OLED_DISPLAY_TYPE==96)	
-	#pragma message "OLED type is SSD1306 0.96"
+	//#pragma message "OLED type is SSD1306 0.96"
 	Adafruit_SSD1306 display;
 	#elif (OLED_DISPLAY_TYPE==130)
-	#pragma message "OLED type is SH1106 1.3"
+	//#pragma message "OLED type is SH1106 1.3"
 	Adafruit_SH1106 display;		
 	#endif    
 };
@@ -40,10 +41,10 @@ Oled::Oled(){
 	oled_str_changed[0]=0; oled_str_changed[1]=0; oled_str_changed[2]=0; oled_str_changed[3]=0; 
 	oled_need_update=0;
 	#if(OLED_DISPLAY_TYPE==96)
-	#pragma message "OLED type SSD1306 0.96 assign"
+	//#pragma message "OLED type SSD1306 0.96 assign"
 	display=Adafruit_SSD1306(screen_width, screen_height, &Wire, -1); // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins) 
 	#elif(OLED_DISPLAY_TYPE==130)
-	#pragma message "OLED type SH1306 1.3 assign"
+	//#pragma message "OLED type SH1306 1.3 assign"
 	display=Adafruit_SH1106(21,22); // Declaration for an display connected to I2C (SDA, SCL pins) 
 	#endif
 	
@@ -85,4 +86,18 @@ void Oled::print(int row, String s){
   oled_need_update=1;
   oled_str_changed[row]=1;
   oled_text[row]=s;
+}
+
+void Oled::prints(String s){
+  oled_text[3]=oled_text[2];
+  oled_text[2]=oled_text[1];
+  oled_text[1]=oled_text[0];
+  oled_text[0]=s;
+  oled_str_changed[0]=1;
+  oled_str_changed[1]=1;
+  oled_str_changed[2]=1;
+  oled_str_changed[3]=1;  
+  oled_need_update=1;
+  Oled::update();
+  
 }
