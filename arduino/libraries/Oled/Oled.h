@@ -13,8 +13,9 @@
 
 class Oled{
   public:
-    Oled();
+    Oled();	
     void begin();
+	void clear();
     void update();//screen rendering
     void print(int row, String s);        
 	void prints(String s);//print in 1-st string and scroll down the screen// Not need update()
@@ -57,6 +58,7 @@ void Oled::begin(){
 	display.begin(SH1106_SWITCHCAPVCC, 0x3C);
 	#endif
   
+  display.setTextWrap(false);
   display.setFont(&CourierCyr8pt8b);
   display.setTextSize(1);             
   display.setTextColor(WHITE);  
@@ -65,6 +67,20 @@ void Oled::begin(){
   display.println("loading OS...");
   display.display(); 
   delay(500);       
+}
+
+void Oled::clear(){
+	oled_text[0]="";
+	oled_text[1]="";
+	oled_text[2]="";
+	oled_text[3]="";
+	oled_str_changed[0]=0;
+	oled_str_changed[1]=0;
+	oled_str_changed[2]=0;
+	oled_str_changed[3]=0;  
+	oled_need_update=0;
+	display.clearDisplay();
+	display.display(); 	
 }
 
 void Oled::update(){
@@ -89,11 +105,11 @@ void Oled::print(int row, String s){
 }
 
 void Oled::prints(String s){
-  s.remove(12);
-  oled_text[3]=oled_text[2];
-  oled_text[2]=oled_text[1];
-  oled_text[1]=oled_text[0];
-  oled_text[0]=s;
+  //s.remove(12);//если display.setTextWrap(false); - то не нужно обрезать строку
+  oled_text[0]=oled_text[1];
+  oled_text[1]=oled_text[2];
+  oled_text[2]=oled_text[3];
+  oled_text[3]=s;
   oled_str_changed[0]=1;
   oled_str_changed[1]=1;
   oled_str_changed[2]=1;
