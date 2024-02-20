@@ -15,7 +15,7 @@ class Oled{
   public:
     Oled();	
     void begin();
-	void clear();
+	void clear();//clear and rendering
     void update();//screen rendering
     void print(int row, String s);        
 	void prints(String s);//print in 1-st string and scroll down the screen// Not need update()
